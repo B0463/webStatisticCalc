@@ -1,10 +1,14 @@
 import Express from 'express';
+import path from 'path';
+import fs from 'fs';
 
 async function main() {
     const App = Express();
     
     App.get("/", async (req, res)=>{
-        res.status(200).send("test");
+        fs.readFile(path.join(__dirname, "../../front/index.html"), (err, data)=>{
+            res.status(200).send(data.toString());
+        });
     });
 
     App.listen(8080, async ()=>{
