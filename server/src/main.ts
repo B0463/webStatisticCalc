@@ -10,6 +10,7 @@ async function main() {
 
     // create middlewares
     App.use(Express.json());
+    App.use('/assets', Express.static(path.join(__dirname, '../../front/assets')));
 
     App.use((err: any, req: Request, res: Response, next: NextFunction) => {
         if(err instanceof SyntaxError && 'body' in err) {
