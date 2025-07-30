@@ -1,4 +1,4 @@
-import Express from 'express';
+import Express, {Request, Response, NextFunction} from 'express';
 import path from 'path';
 import fs from 'fs';
 import API from './api';
@@ -11,8 +11,15 @@ async function main() {
     // create middlewares
     App.use(Express.json());
 
+    App.use((err: any, req: Request, res: Response, next: NextFunction) => {
+        if(err instanceof SyntaxError && 'body' in err) {
+            return res.status(400).json({ error: 'Invalid JSON format' });
+        }
+        next();
+    });
+
     // define index get route
-    App.get("/", (req: Express.Request, res: Express.Response)=>{
+    App.get("/", (req: Request, res: Response)=>{
         // join the relative path to index
         const filePath = path.join(__dirname, "../../front/index.html");
 
