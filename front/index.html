@@ -1,39 +1,40 @@
 <!DOCTYPE html>
+
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coordinate and Date Input</title>
-    <link rel="stylesheet" href="/assets/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-</head>
-<body>
-    <div class="container">
-        <h1>Coordinate and Date Input</h1>
-        <form id="dataForm">
-            <label for="latitude">Latitude (-90 to 90):</label>
-            <input type="number" id="latitude" required>
-            <span class="error" id="latError"></span>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Web Statistic Calc</title>
+        <link rel="stylesheet" href="/assets/style.css">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Web Statistic Calc</h1>
+            <form id="dataForm">
+                <label for="latitude">Latitude (-90 to 90):</label>
+                <input type="number" id="latitude" required>
+                <span class="error" id="latError"></span>
 
-            <label for="longitude">Longitude (-180 to 180):</label>
-            <input type="number" id="longitude" required>
-            <span class="error" id="lonError"></span>
+                <label for="longitude">Longitude (-180 to 180):</label>
+                <input type="number" id="longitude" required>
+                <span class="error" id="lonError"></span>
 
-            <label for="startDate">Start Date:</label>
-            <input type="date" id="startDate" required>
-            <span class="error" id="startDateError"></span>
+                <label for="startDate">Start Date:</label>
+                <input type="date" id="startDate" required>
+                <span class="error" id="startDateError"></span>
 
-            <label for="endDate">End Date:</label>
-            <input type="date" id="endDate" required>
-            <span class="error" id="endDateError"></span>
+                <label for="endDate">End Date:</label>
+                <input type="date" id="endDate" required>
+                <span class="error" id="endDateError"></span>
 
-            <button type="button" id="calculateBtn">Calculate</button>
-        </form>
+                <button type="button" id="calculateBtn">Calculate</button>
+            </form>
 
-        <canvas id="myChart" width="400" height="200"></canvas>
-    </div>
+            <canvas id="myChart" width="600" height="300"></canvas>
+        </div>
 
-    <script src="/assets/main.js"></script>
-</body>
+        <script src="/assets/main.js"></script>
+    </body>
 </html>

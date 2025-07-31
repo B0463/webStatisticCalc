@@ -1,4 +1,5 @@
 document.getElementById('calculateBtn').addEventListener('click', function() {
+    // Get the input objects
     const latitude = parseFloat(document.getElementById('latitude').value);
     const longitude = parseFloat(document.getElementById('longitude').value);
     const startDate = new Date(document.getElementById('startDate').value);
@@ -36,15 +37,17 @@ document.getElementById('calculateBtn').addEventListener('click', function() {
 });
 
 async function createApiRequest(latitude, longitude, startDate, endDate) {
+    // create body object
     const sendData = {
         latitude: latitude,
         longitude: longitude,
-        start_date: startDate.toISOString().split('T')[0],
-        end_date: endDate.toISOString().split('T')[0]
+        start_date: startDate.toISOString().split('T')[0], // convert to correct ISO format
+        end_date: endDate.toISOString().split('T')[0]      // convert to correct ISO format
     };
 
     let responseData;
     try {
+        // try to send data
         responseData = await axios.post("/api/temperature", sendData);
     } catch(e) {
         console.log(e);
@@ -62,9 +65,9 @@ async function createChart(latitude, longitude, startDate, endDate) {
     // create chart
     const ctx = document.getElementById('myChart').getContext('2d');
 
-    if(myChart) myChart.destroy();
+    if(myChart) myChart.destroy(); // close chart if exist
     
-    // create statistics chart datasets
+    // create statistics chart datasets with datas
     const stats = responseData.data.statistics;
     const timestamps = responseData.data.timestamps;
     const datasets = [
@@ -77,7 +80,11 @@ async function createChart(latitude, longitude, startDate, endDate) {
         },
         {
             label: 'Mean',
-            data: Array(timestamps.length).fill(stats.mean),
+            data: [
+                { x: timestamps[0], y: stats.mean },
+                { x: timestamps[timestamps.length - 1], y: stats.mean }
+            ],
+            tension: 0,
             borderColor: 'orange',
             borderWidth: 1,
             borderDash: [5, 5],
@@ -85,7 +92,11 @@ async function createChart(latitude, longitude, startDate, endDate) {
         },
         {
             label: 'Median',
-            data: Array(timestamps.length).fill(stats.median),
+            data: [
+                { x: timestamps[0], y: stats.median },
+                { x: timestamps[timestamps.length - 1], y: stats.median }
+            ],
+            tension: 0,
             borderColor: 'purple',
             borderWidth: 1,
             borderDash: [5, 5],
@@ -93,7 +104,11 @@ async function createChart(latitude, longitude, startDate, endDate) {
         },
         {
             label: 'Mode',
-            data: Array(timestamps.length).fill(stats.mode[0]),
+            data: [
+                { x: timestamps[0], y: stats.mode[0] },
+                { x: timestamps[timestamps.length - 1], y: stats.mode[0] }
+            ],
+            tension: 0,
             borderColor: 'blue',
             borderWidth: 1,
             borderDash: [3, 3],
@@ -101,7 +116,11 @@ async function createChart(latitude, longitude, startDate, endDate) {
         },
         {
             label: '+1 Std Dev',
-            data: Array(timestamps.length).fill(stats.mean + stats.stdDev),
+            data: [
+                { x: timestamps[0], y: stats.mean + stats.stdDev },
+                { x: timestamps[timestamps.length - 1], y: stats.mean + stats.stdDev }
+            ],
+            tension: 0,
             borderColor: 'green',
             borderWidth: 1,
             borderDash: [2, 2],
@@ -109,7 +128,11 @@ async function createChart(latitude, longitude, startDate, endDate) {
         },
         {
             label: '-1 Std Dev',
-            data: Array(timestamps.length).fill(stats.mean - stats.stdDev),
+            data: [
+                { x: timestamps[0], y: stats.mean - stats.stdDev },
+                { x: timestamps[timestamps.length - 1], y: stats.mean - stats.stdDev }
+            ],
+            tension: 0,
             borderColor: 'red',
             borderWidth: 1,
             borderDash: [2, 2],
@@ -117,7 +140,11 @@ async function createChart(latitude, longitude, startDate, endDate) {
         },
         {
             label: 'Q1',
-            data: Array(timestamps.length).fill(stats.quartiles.q1),
+            data: [
+                { x: timestamps[0], y: stats.quartiles.q1 },
+                { x: timestamps[timestamps.length - 1], y: stats.quartiles.q1 }
+            ],
+            tension: 0,
             borderColor: 'brown',
             borderWidth: 1,
             borderDash: [4, 4],
@@ -125,7 +152,11 @@ async function createChart(latitude, longitude, startDate, endDate) {
         },
         {
             label: 'Q3',
-            data: Array(timestamps.length).fill(stats.quartiles.q3),
+            data: [
+                { x: timestamps[0], y: stats.quartiles.q3 },
+                { x: timestamps[timestamps.length - 1], y: stats.quartiles.q3 }
+            ],
+            tension: 0,
             borderColor: 'brown',
             borderWidth: 1,
             borderDash: [4, 4],
@@ -133,7 +164,11 @@ async function createChart(latitude, longitude, startDate, endDate) {
         },
         {
             label: 'Min',
-            data: Array(timestamps.length).fill(stats.min),
+            data: [
+                { x: timestamps[0], y: stats.min },
+                { x: timestamps[timestamps.length - 1], y: stats.min }
+            ],
+            tension: 0,
             borderColor: 'black',
             borderWidth: 1,
             borderDash: [1, 2],
@@ -141,7 +176,11 @@ async function createChart(latitude, longitude, startDate, endDate) {
         },
         {
             label: 'Max',
-            data: Array(timestamps.length).fill(stats.max),
+            data: [
+                { x: timestamps[0], y: stats.max },
+                { x: timestamps[timestamps.length - 1], y: stats.max }
+            ],
+            tension: 0,
             borderColor: 'black',
             borderWidth: 1,
             borderDash: [1, 2],
@@ -149,7 +188,11 @@ async function createChart(latitude, longitude, startDate, endDate) {
         },
         {
             label: 'IRQ',
-            data: Array(timestamps.length).fill(stats.iqr),
+            data: [
+                { x: timestamps[0], y: stats.iqr },
+                { x: timestamps[timestamps.length - 1], y: stats.iqr }
+            ],
+            tension: 0,
             borderColor: 'teal',
             borderWidth: 1,
             borderDash: [1, 2],
@@ -157,7 +200,7 @@ async function createChart(latitude, longitude, startDate, endDate) {
         }
     ];
 
-
+    // create chart
     myChart = new Chart(ctx, {
         type: 'line',
         data: {

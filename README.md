@@ -91,7 +91,7 @@ Response format:
    node server/dist/main.js  
    ```
 
-The server will be available at `http://localhost:PORT/weather`
+The server will be available at `http://localhost:PORT/`
 
 ---
 
