@@ -70,6 +70,18 @@ async function createChart(latitude, longitude, startDate, endDate) {
     // create statistics chart datasets with datas
     const stats = responseData.data.statistics;
     const timestamps = responseData.data.timestamps;
+
+    // update statistics section
+    document.getElementById('meanValue').textContent = `Mean: ${stats.mean}`;
+    document.getElementById('medianValue').textContent = `Median: ${stats.median}`;
+    document.getElementById('modeValue').textContent = `Mode: ${stats.mode.join(', ')}`;
+    document.getElementById('stdDevValue').textContent = `Standard Deviation: ${stats.stdDev}`;
+    document.getElementById('minValue').textContent = `Min: ${stats.min}`;
+    document.getElementById('maxValue').textContent = `Max: ${stats.max}`;
+    document.getElementById('q1Value').textContent = `Q1: ${stats.quartiles.q1}`;
+    document.getElementById('q3Value').textContent = `Q3: ${stats.quartiles.q3}`;
+    document.getElementById('iqrValue').textContent = `IQR: ${stats.iqr}`;
+
     const datasets = [
         {
             label: 'Temperature',

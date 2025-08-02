@@ -42,3 +42,18 @@ button {
 button:hover {
     background-color: #218838;
 }
+
+.statistics-box {
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #e9ecef;
+    border-radius: 5px;
+}
+
+.statistics-box h2 {
+    margin: 0 0 10px;
+}
+
+.statistics-box p {
+    margin: 5px 0;
+}
