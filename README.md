@@ -66,30 +66,31 @@ Response format:
 
 1. Clone the repository
 
-   ```bash
-   git clone https://github.com/B0463/webStatisticCalc.git
-   cd webStatisticCalc
-   ```
+    ```bash
+    git clone https://github.com/B0463/webStatisticCalc.git
+    cd webStatisticCalc
+    ```
 
 2. Install dependencies
 
-   ```bash
-   npm install
-   ```
+    ```bash
+    npm install
+    ```
 
 3. Compile TypeScript server to JavaScript, and remove development dependencies
 
-   ```bash
-   cd server
-   npx tsc
-   cd ..
-   npm uninstall --save-dev
-   ```
+    ```bash
+    cd server
+    npx tsc
+    cd ..
+    npm uninstall --save-dev
+    ```
+
 4. Run the server
 
-   ```bash
-   node server/dist/main.js  
-   ```
+    ```bash
+    node server/dist/main.js  
+    ```
 
 The server will be available at `http://localhost:PORT/`
 
