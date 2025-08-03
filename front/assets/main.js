@@ -60,7 +60,6 @@ async function compressData(responseData, factor) {
         responseDataCompressed.data.timestamps.push(responseData.data.timestamps[i]);
         responseDataCompressed.data.temperatures.push(compressedTemperature);
     }
-
     return responseDataCompressed;
 }
 
@@ -91,7 +90,7 @@ async function createApiRequest(latitude, longitude, startDate, endDate) {
     if(deltaTime < 18 * 30 * 24 * 60 * 60 * 1000) return await compressData(responseData, 6);
     if(deltaTime < 24 * 30 * 24 * 60 * 60 * 1000) return await compressData(responseData, 8);
     if(deltaTime < 36 * 30 * 24 * 60 * 60 * 1000) return await compressData(responseData, 12);
-    if(deltaTime < 60 * 30 * 24 * 60 * 60 * 1000) return await compressData(responseData, 24);
+    return await compressData(responseData, 24);
 }
 
 let myChart = null;
