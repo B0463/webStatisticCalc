@@ -29,8 +29,8 @@ document.getElementById('calculateBtn').addEventListener('click', function() {
     if(startDate > endDate)
         return document.getElementById('startDateError').textContent = 'Start date cannot be after end date.';
 
-    if((endDate - startDate) / (1000 * 60 * 60 * 24) > 30)
-        return document.getElementById('endDateError').textContent = 'Date range cannot exceed 30 days.';
+    if((endDate - startDate) / (1000 * 60 * 60 * 24) > 365)
+        return document.getElementById('endDateError').textContent = 'Date range cannot exceed 365 days.';
 
     // call the function to create the chart
     createChart(latitude, longitude, startDate, endDate);

@@ -53,7 +53,7 @@ class TemperatureService {
         if(startDate < minDate) return { error: "start_date must be after 1990-01-01" };
         if(endDate > cutoff) return { error: "end_date must be at least 24 hours before now" };
         if(deltaTime < 0) return { error: "start_date must be before end_date" };
-        if(deltaTime > 30 * 24 * 60 * 60 * 1000) return { error: "The time window must be less than 30 days" };
+        if(deltaTime > 365 * 24 * 60 * 60 * 1000) return { error: "The time window must be less than 365 days" };
 
         return {};
     }
