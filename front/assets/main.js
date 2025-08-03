@@ -84,12 +84,14 @@ async function createApiRequest(latitude, longitude, startDate, endDate) {
     // Compress data
     const deltaTime = endDate.getTime() - startDate.getTime();
 
-    if(deltaTime < 3 * 30 * 24 * 60 * 60 * 1000) return await compressData(responseData, 1);
-    if(deltaTime < 6 * 30 * 24 * 60 * 60 * 1000) return await compressData(responseData, 2);
-    if(deltaTime < 1 * 366 * 24 * 60 * 60 * 1000) return await compressData(responseData, 4);
-    if(deltaTime < 2 * 366 * 24 * 60 * 60 * 1000) return await compressData(responseData, 8);
-    if(deltaTime < 3 * 366 * 24 * 60 * 60 * 1000) return await compressData(responseData, 12);
-    if(deltaTime < 5 * 366 * 24 * 60 * 60 * 1000) return await compressData(responseData, 24);
+    if(deltaTime <  3 * 30 * 24 * 60 * 60 * 1000) return await compressData(responseData, 1);
+    if(deltaTime <  6 * 30 * 24 * 60 * 60 * 1000) return await compressData(responseData, 2);
+    if(deltaTime <  9 * 30 * 24 * 60 * 60 * 1000) return await compressData(responseData, 3);
+    if(deltaTime < 12 * 30 * 24 * 60 * 60 * 1000) return await compressData(responseData, 4);
+    if(deltaTime < 18 * 30 * 24 * 60 * 60 * 1000) return await compressData(responseData, 6);
+    if(deltaTime < 24 * 30 * 24 * 60 * 60 * 1000) return await compressData(responseData, 8);
+    if(deltaTime < 36 * 30 * 24 * 60 * 60 * 1000) return await compressData(responseData, 12);
+    if(deltaTime < 60 * 30 * 24 * 60 * 60 * 1000) return await compressData(responseData, 24);
 }
 
 let myChart = null;
@@ -122,9 +124,10 @@ async function createChart(latitude, longitude, startDate, endDate) {
         {
             label: 'Temperature',
             data: responseData.data.temperatures,
-            borderColor: 'rgba(75, 192, 192, 1)',
+            borderColor: '#00e5ff', // Ciano neon
             borderWidth: 1,
-            fill: false
+            fill: false,
+            pointRadius: 0
         },
         {
             label: 'Mean',
@@ -133,8 +136,8 @@ async function createChart(latitude, longitude, startDate, endDate) {
                 { x: timestamps[timestamps.length - 1], y: stats.mean }
             ],
             tension: 0,
-            borderColor: 'orange',
-            borderWidth: 1,
+            borderColor: '#ff6d00', // Laranja intenso
+            borderWidth: 2,
             borderDash: [5, 5],
             fill: false
         },
@@ -145,8 +148,8 @@ async function createChart(latitude, longitude, startDate, endDate) {
                 { x: timestamps[timestamps.length - 1], y: stats.median }
             ],
             tension: 0,
-            borderColor: 'purple',
-            borderWidth: 1,
+            borderColor: '#d500f9', // Roxo vivo
+            borderWidth: 2,
             borderDash: [5, 5],
             fill: false
         },
@@ -157,8 +160,8 @@ async function createChart(latitude, longitude, startDate, endDate) {
                 { x: timestamps[timestamps.length - 1], y: stats.mode[0] }
             ],
             tension: 0,
-            borderColor: 'blue',
-            borderWidth: 1,
+            borderColor: '#2979ff', // Azul forte
+            borderWidth: 2,
             borderDash: [3, 3],
             fill: false
         },
@@ -169,8 +172,8 @@ async function createChart(latitude, longitude, startDate, endDate) {
                 { x: timestamps[timestamps.length - 1], y: stats.mean + stats.stdDev }
             ],
             tension: 0,
-            borderColor: 'green',
-            borderWidth: 1,
+            borderColor: '#00c853', // Verde vibrante
+            borderWidth: 2,
             borderDash: [2, 2],
             fill: false
         },
@@ -181,8 +184,8 @@ async function createChart(latitude, longitude, startDate, endDate) {
                 { x: timestamps[timestamps.length - 1], y: stats.mean - stats.stdDev }
             ],
             tension: 0,
-            borderColor: 'red',
-            borderWidth: 1,
+            borderColor: '#ff1744', // Vermelho forte
+            borderWidth: 2,
             borderDash: [2, 2],
             fill: false
         },
@@ -193,8 +196,8 @@ async function createChart(latitude, longitude, startDate, endDate) {
                 { x: timestamps[timestamps.length - 1], y: stats.quartiles.q1 }
             ],
             tension: 0,
-            borderColor: 'brown',
-            borderWidth: 1,
+            borderColor: '#ffd600', // Amarelo forte
+            borderWidth: 2,
             borderDash: [4, 4],
             fill: false
         },
@@ -205,8 +208,8 @@ async function createChart(latitude, longitude, startDate, endDate) {
                 { x: timestamps[timestamps.length - 1], y: stats.quartiles.q3 }
             ],
             tension: 0,
-            borderColor: 'brown',
-            borderWidth: 1,
+            borderColor: '#ffd600', // Amarelo forte
+            borderWidth: 2,
             borderDash: [4, 4],
             fill: false
         },
@@ -217,8 +220,8 @@ async function createChart(latitude, longitude, startDate, endDate) {
                 { x: timestamps[timestamps.length - 1], y: stats.min }
             ],
             tension: 0,
-            borderColor: 'black',
-            borderWidth: 1,
+            borderColor: '#ffffff', // Branco puro
+            borderWidth: 2,
             borderDash: [1, 2],
             fill: false
         },
@@ -229,23 +232,11 @@ async function createChart(latitude, longitude, startDate, endDate) {
                 { x: timestamps[timestamps.length - 1], y: stats.max }
             ],
             tension: 0,
-            borderColor: 'black',
-            borderWidth: 1,
+            borderColor: '#ffffff', // Branco puro
+            borderWidth: 2,
             borderDash: [1, 2],
             fill: false
         },
-        {
-            label: 'IRQ',
-            data: [
-                { x: timestamps[0], y: stats.iqr },
-                { x: timestamps[timestamps.length - 1], y: stats.iqr }
-            ],
-            tension: 0,
-            borderColor: 'teal',
-            borderWidth: 1,
-            borderDash: [1, 2],
-            fill: false
-        }
     ];
 
     // create chart
@@ -256,9 +247,37 @@ async function createChart(latitude, longitude, startDate, endDate) {
             datasets: datasets
         },
         options: {
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#e0e0e0'
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#333',
+                    titleColor: '#fff',
+                    bodyColor: '#ccc',
+                    borderColor: '#555',
+                    borderWidth: 1
+                }
+            },
             scales: {
+                x: {
+                    ticks: {
+                        color: '#e0e0e0'
+                    },
+                    grid: {
+                        color: '#444'
+                    }
+                },
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    ticks: {
+                        color: '#e0e0e0'
+                    },
+                    grid: {
+                        color: '#444'
+                    }
                 }
             }
         }
