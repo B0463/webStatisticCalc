@@ -15,7 +15,7 @@ It is designed to provide a single HTTP endpoint where you can submit a request 
 
 Send a POST request to the following endpoint:
 
-**POST** `/weather`
+**POST** `/api/temperature`
 
 Request body format:
 
@@ -32,22 +32,32 @@ Response format:
 
 ```json
 {
-    "timestamps": [...],
-    "temperatures": [...],
+    "timestamps": [
+        "1990-01-01T00:00",
+        "1990-01-01T01:00"
+        // ...
+    ],
+    "temperatures": [
+        17.5,
+        16.9
+        // ...
+    ],
     "statistics": {
-        "mean": ...,
-        "median": ...,
-        "mode": [...],
-        "variance": ...,
-        "stdDev": ...,
-        "min": ...,
-        "max": ...,
+        "mean": 23.4,
+        "median": 23,
+        "mode": [
+            30.8
+        ],
+        "variance": 33.9,
+        "stdDev": 5.8,
+        "min": 14.4,
+        "max": 31.6,
         "quartiles": {
-        "q1": ...,
-        "q2": ...,
-        "q3": ...
+            "q1": 17.65,
+            "q2": 23,
+            "q3": 29.3
         },
-        "iqr": ...
+        "iqr": 11.6
     }
 }
 ```
@@ -55,37 +65,27 @@ Response format:
 ## How to Run
 
 1. Clone the repository
-2. Enter the server directory
-
-   ```bash  
-   cd server  
-   ```
-
-3. Install dependencies
 
    ```bash
-   npm install  
+   git clone https://github.com/B0463/webStatisticCalc.git
+   cd webStatisticCalc
    ```
 
-4. Compile TypeScript to JavaScript
+2. Install dependencies
 
    ```bash
-   npx tsc  
+   npm install
    ```
 
-5. Optionally, remove development dependencies
+3. Compile TypeScript server to JavaScript, and remove development dependencies
 
    ```bash
-   npm uninstall --save-dev  
+   cd server
+   npx tsc
+   cd ..
+   npm uninstall --save-dev
    ```
-
-6. Go back to root folder (if needed)
-
-   ```bash
-   cd ..  
-   ```
-
-7. Run the server
+4. Run the server
 
    ```bash
    node server/dist/main.js  
