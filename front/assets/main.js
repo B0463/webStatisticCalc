@@ -4,33 +4,30 @@ document.getElementById('calculateBtn').addEventListener('click', function() {
     const longitude = parseFloat(document.getElementById('longitude').value);
     const startDate = new Date(document.getElementById('startDate').value);
     const endDate = new Date(document.getElementById('endDate').value);
-    const now = new Date();
+
+    // Get the error objects
+    const latError = document.getElementById('latError');
+    const lonError = document.getElementById('lonError');
+    const startDateError = document.getElementById('startDateError');
+    const endDateError = document.getElementById('endDateError');
 
     // Clear previous error messages
-    document.getElementById('latError').textContent = '';
-    document.getElementById('lonError').textContent = '';
-    document.getElementById('startDateError').textContent = '';
-    document.getElementById('endDateError').textContent = '';
+    latError.textContent = '';
+    lonError.textContent = '';
+    startDateError.textContent = '';
+    endDateError.textContent = '';
 
-    // Validate latitude and longitude
-    if(isNaN(latitude) || latitude < -90 || latitude > 90)
-        return document.getElementById('latError').textContent = 'Invalid latitude. Must be between -90 and 90.';
-
-    if(isNaN(longitude) || longitude < -180 || longitude > 180)
-        return getElementById('lonError').textContent = 'Invalid longitude. Must be between -180 and 180.';
-
-    // Validate dates
-    if(startDate < new Date('1990-01-01'))
-        return document.getElementById('startDateError').textContent = 'Start date cannot be before 01/01/1990.';
-        
-    if(endDate > new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1))
-        return document.getElementById('endDateError').textContent = 'End date cannot be in the future.';
-        
-    if(startDate > endDate)
-        return document.getElementById('startDateError').textContent = 'Start date cannot be after end date.';
-
-    if((endDate - startDate) / (1000 * 60 * 60 * 24) > 365)
-        return document.getElementById('endDateError').textContent = 'Date range cannot exceed 365 days.';
+    // Validate inputs
+    const now = new Date();
+    const deltaTime = endDate.getTime() - startDate.getTime();
+    const cutoff = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    
+    if(isNaN(latitude) || latitude < -90 || latitude > 90) return latError.textContent = 'Invalid latitude. Must be between -90 and 90.';
+    if(isNaN(longitude) || longitude < -180 || longitude > 180) return lonError.textContent = 'Invalid longitude. Must be between -180 and 180.';
+    if(startDate < new Date('1990-01-01')) return startDateError.textContent = 'Start date cannot be before 01/01/1990.';
+    if(endDate > cutoff) return endDateError.textContent = "End date must be at least 24 hours before now";
+    if(deltaTime < 0) return startDateError.textContent = 'Start date cannot be after end date.';
+    if(deltaTime > 365 * 24 * 60 * 60 * 1000) return endDateError.textContent = 'Date range cannot exceed 365 days.';
 
     // call the function to create the chart
     createChart(latitude, longitude, startDate, endDate);
