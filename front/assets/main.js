@@ -29,9 +29,40 @@ document.getElementById('calculateBtn').addEventListener('click', function() {
     if(deltaTime < 0) return startDateError.textContent = 'Start date cannot be after end date.';
     if(deltaTime > 5 * 366 * 24 * 60 * 60 * 1000) return endDateError.textContent = 'Date range cannot exceed 5 years.';
 
+
+
     // call the function to create the chart
     createChart(latitude, longitude, startDate, endDate);
 });
+
+async function compressData(responseData, factor) {
+    if(factor == 1) return responseData;
+
+    // create return object
+    const responseDataCompressed = {
+        data: {
+            timestamps: [],
+            temperatures: [],
+            statistics: responseData.data.statistics,
+        }
+    };
+
+    // process timestemps and temperatures
+    for(let i = 0; i < responseData.data.timestamps.length; i += factor) {
+        // get temperature mean by factor
+        let temperaturesSum = 0;
+        for(let j = i; j < i+factor; j++) {
+            temperaturesSum += responseData.data.temperatures[j];
+        }
+        const compressedTemperature = temperaturesSum / factor;
+
+        // add data to Compressed object
+        responseDataCompressed.data.timestamps.push(responseData.data.timestamps[i]);
+        responseDataCompressed.data.temperatures.push(compressedTemperature);
+    }
+
+    return responseDataCompressed;
+}
 
 async function createApiRequest(latitude, longitude, startDate, endDate) {
     // create body object
@@ -50,7 +81,15 @@ async function createApiRequest(latitude, longitude, startDate, endDate) {
         console.log(e);
     }
 
-    return responseData;
+    // Compress data
+    const deltaTime = endDate.getTime() - startDate.getTime();
+
+    if(deltaTime < 3 * 30 * 24 * 60 * 60 * 1000) return await compressData(responseData, 1);
+    if(deltaTime < 6 * 30 * 24 * 60 * 60 * 1000) return await compressData(responseData, 2);
+    if(deltaTime < 1 * 366 * 24 * 60 * 60 * 1000) return await compressData(responseData, 4);
+    if(deltaTime < 2 * 366 * 24 * 60 * 60 * 1000) return await compressData(responseData, 8);
+    if(deltaTime < 3 * 366 * 24 * 60 * 60 * 1000) return await compressData(responseData, 12);
+    if(deltaTime < 5 * 366 * 24 * 60 * 60 * 1000) return await compressData(responseData, 24);
 }
 
 let myChart = null;
